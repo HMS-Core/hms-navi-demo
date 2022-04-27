@@ -1,0 +1,42 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Setting the Running Environment of the Script
+buildscript {
+    ext.kotlin_version = '1.5.0'
+    repositories {
+        // todo Internal Maven repository, which is temporarily used for sample code development.
+        maven { url 'http://szg1.artifactory.inhuawei.com/artifactory/sz-maven-public/' }
+        maven { url 'http://developer.huawei.com/repo/' }
+        maven {
+            url 'http://szg1.artifactory.inhuawei.com/artifactory/Product-cloudserviceSDK-release'
+        }
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.huawei.agconnect:agcp:1.6.0.300'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        // todo Internal Maven repository, which is temporarily used for sample code development.
+        maven {url 'https://cmc.centralrepo.rnd.huawei.com/maven' }
+        maven {url 'https://cmc.centralrepo.rnd.huawei.com/artifactory/product_maven/' }
+        maven {url 'http://dgg.maven.repo.cmc.tools.huawei.com/artifactory/sz-maven-public' }
+        google()
+        mavenCentral()
+    }
+
+    buildscript {
+        repositories {
+            maven {url 'https://cmc.centralrepo.rnd.huawei.com/artifactory/product_maven/' }
+            maven { url 'http://dgg.maven.repo.cmc.tools.huawei.com/artifactory/sz-maven-public' }
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

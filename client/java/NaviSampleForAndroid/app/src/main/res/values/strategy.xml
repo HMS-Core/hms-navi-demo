@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="strategy">
+        <item>Smart Recommend</item>
+        <item>Save Time</item>
+        <item>Avoid Highway</item>
+        <item>Avoid Ferry</item>
+        <item>Avoid Toll</item>
+        <item>Save Distance</item>
+        <item>Avoid Ferry、Avoid Toll</item>
+        <item>Priority Road</item>
+        <item>Priority Highway</item>
+        <item>Save Money</item>
+        <item>Avoid Congestion</item>
+    </string-array>
+</resources>

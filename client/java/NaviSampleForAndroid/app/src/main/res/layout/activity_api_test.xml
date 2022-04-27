@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <!--    Area for setting input parameters  -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/start_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="starting point:"
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/m_start_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22.3097031,114.1846103"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/end_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="end point"
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/m_end_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22.2642825,114.1801964"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/way_one_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pathway Point 1"
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/way_one_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22.25398047,114.1799092"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/way_two_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pathway Point 2"
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/way_two_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/way_three_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pathway Point 3"
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/way_three_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!--    Operation entity -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Operation entity"
+            android:textSize="11sp" />
+
+        <RadioGroup
+            android:id="@+id/operation_entity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/dr1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="China"
+                android:checked="true"
+                />
+
+            <RadioButton
+                android:id="@+id/dr2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Asia, Africa and Latin America"
+                />
+
+            <RadioButton
+                android:id="@+id/dr3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Europe"
+                />
+
+            <RadioButton
+                android:id="@+id/dr4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Russia"
+                />
+        </RadioGroup>
+    </LinearLayout>
+
+    <!--    Traffic type and navigation policy setting -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Types of Traffic:"
+            android:textSize="11sp" />
+
+        <Spinner
+            android:id="@+id/sp_navi_mode"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:entries="@array/naviMode"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/text_strategy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Navigation Strategy:"
+            android:textSize="11sp" />
+
+        <Spinner
+            android:id="@+id/sp_navi_strategy"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:entries="@array/strategy"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/conversation_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="conversationId (32-bit): "
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/conversation_id_var"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12345678123456781234567812345678"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/user_apikey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="user_apikey: "
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/user_apikey_var"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="11sp"
+            android:layout_marginRight="10dp"
+            />
+    </LinearLayout>
+
+    <!--    Button area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_routing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Routing" />
+
+        <Button
+            android:id="@+id/btn_start_navi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guiding" />
+    </LinearLayout>
+
+
+</LinearLayout>
