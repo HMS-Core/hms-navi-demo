@@ -3,14 +3,9 @@
 buildscript {
     ext.kotlin_version = '1.5.0'
     repositories {
-        // todo Internal Maven repository, which is temporarily used for sample code development.
-        maven { url 'http://szg1.artifactory.inhuawei.com/artifactory/sz-maven-public/' }
-        maven { url 'http://developer.huawei.com/repo/' }
-        maven {
-            url 'http://szg1.artifactory.inhuawei.com/artifactory/Product-cloudserviceSDK-release'
-        }
         google()
         mavenCentral()
+        maven { url 'https://developer.huawei.com/repo/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.4'
@@ -21,19 +16,9 @@ buildscript {
 
 allprojects {
     repositories {
-        // todo Internal Maven repository, which is temporarily used for sample code development.
-        maven {url 'https://cmc.centralrepo.rnd.huawei.com/maven' }
-        maven {url 'https://cmc.centralrepo.rnd.huawei.com/artifactory/product_maven/' }
-        maven {url 'http://dgg.maven.repo.cmc.tools.huawei.com/artifactory/sz-maven-public' }
         google()
         mavenCentral()
-    }
-
-    buildscript {
-        repositories {
-            maven {url 'https://cmc.centralrepo.rnd.huawei.com/artifactory/product_maven/' }
-            maven { url 'http://dgg.maven.repo.cmc.tools.huawei.com/artifactory/sz-maven-public' }
-        }
+        maven { url 'https://developer.huawei.com/repo/' }
     }
 }
 

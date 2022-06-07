@@ -4,7 +4,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.huawei.hms.navi.demo.android"
@@ -31,5 +31,5 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    implementation 'com.huawei.hms:NaviSDK:6.4.1.300'
+    implementation 'com.huawei.hms:navisdk:6.4.1.301'
 }

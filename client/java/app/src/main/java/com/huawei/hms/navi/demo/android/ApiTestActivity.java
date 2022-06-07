@@ -1,5 +1,4 @@
-/**
- *
+/*
  * Copyright (c) Huawei Technologies Co., Ltd. 2019-2022. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.huawei.hms.navi.demo.android;
@@ -379,11 +377,6 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
         }
     }
 
-    /**
-     * 设置apiKey
-     *
-     * @param apiKey 在AppGallery Connect 申请得到的 api秘钥
-     */
     private void setApiKey(String apiKey) {
         if(apiKey == null) {
             return;
