@@ -1,2 +1,2 @@
-## 文件夹介绍
-client-java：为java语言提供的安卓开发者代码示例，更多详情，请参见链接：[English](client/java/README.md)
+## Folder Introduction
+**client-java**: This folder contains the Java sample code for Android developers. For details, please refer to [English](client/java/README.md).

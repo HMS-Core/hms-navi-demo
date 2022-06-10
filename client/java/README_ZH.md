@@ -35,15 +35,15 @@ Navi Kit的主要包含如下5大功能：
 
 首先通过克隆该仓库或者下载压缩包的方式来下载示例代码。
 
-在Android Stuido中，选择Open an existing Android Studio project，然后选择navi-sample文件所在的目录。
+在Android Stuido中，选择Open an existing Android Studio project，然后选择示例代码所在的目录。
 
 你可以使用gradlew build命令来直接编译项目。
 
-你应该在AppGallery Connect中创建一个应用，获取agconnect-services.json文件并将其加入到你的项目中。你还应生成一个签名证书指纹，将证书文件添加到你的项目中，并在build.gradle文件中添加配置。参见“[配置AppGallery Connect](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/android-sdk-config-agc-0000001050158579)”在AppGallery Connect配置应用信息。
+你应该在AppGallery Connect中创建一个应用，获取agconnect-services.json文件并将其加入到你的项目中。你还应生成一个签名证书指纹，将证书文件添加到你的项目中，并在build.gradle文件中添加配置。参见“[配置AppGallery Connect](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/android-sdk-config-agc-0000001214231910)”在AppGallery Connect配置应用信息。
 
 更多开发详情，请参见如下链接：
-- [开发指南]()
-- [接口参考]()
+- [开发指南](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/introduction-0000001185010752)
+- [接口参考](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-References/api-summary-desc-0000001187429984)
 
 环境要求
 -------
@@ -54,7 +54,8 @@ Navi Kit的主要包含如下5大功能：
 + targetSdkVersion 31（推荐）
 + compileSdkVersion 31（推荐）
 + Gradle 5.6.4及以上（推荐）
-+ Android Gradle插件 3.6.0及以上测试应用的设备：EMUI 5.0及以上的华为手机、平板或Android 7.0 ~ 12的非华为手机。
++ Android Gradle插件 3.6.0及以上
++ 测试应用的设备：EMUI 5.0及以上的华为手机、平板或Android 7.0 ~ 12的非华为手机。
 
 ## 结果
 
@@ -68,8 +69,8 @@ Navi Kit的主要包含如下5大功能：
 - 开发过程遇到问题上[Stack Overflow](https://stackoverflow.com/questions/tagged/huawei-mobile-services?tab=Votes)，在**huawei-mobile-services**标签下提问，有华为研发专家在线一对一解决您的问题。
 - 到[华为开发者论坛](https://developer.huawei.com/consumer/cn/forum/blockdisplay?fid=18?ha_source=hms1) HMS Core板块与其他开发者进行交流。
 
-如果您在尝试示例代码中遇到问题，请向仓库提交[issue](https://github.com/HMS-Core/hms-navikit-demo-java/issues)，也欢迎您提交[Pull Request](https://github.com/HMS-Core/hms-navikit-demo/pulls)。
+如果您在尝试示例代码中遇到问题，请向仓库提交[issue](https://github.com/HMS-Core/hms-navi-demo/issues)，也欢迎您提交[Pull Request](https://github.com/HMS-Core/hms-navi-demo/pulls)。
 
 ## 授权许可
 -------
-华为导航服务示例代码经过[Apache License 2.0](https://github.com/HMS-Core/hms-navikit-demo-java/blob/master/LICENSE)授权许可。
+华为导航服务示例代码经过[Apache License 2.0](https://github.com/HMS-Core/hms-navi-demo/blob/main/client/java/LICENSE)授权许可。
