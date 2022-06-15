@@ -50,7 +50,7 @@ Navi Kit的主要包含如下5大功能：
 
 + JDK 1.8及以上
 + 安装Android Studio 3.6.1及以上
-+ minSdkVersion 19及以上
++ minSdkVersion 24及以上
 + targetSdkVersion 31（推荐）
 + compileSdkVersion 31（推荐）
 + Gradle 5.6.4及以上（推荐）

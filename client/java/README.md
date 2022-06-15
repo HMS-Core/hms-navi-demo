@@ -51,7 +51,7 @@ Environment Requirements
 
 + JDK version: 1.8 or later
 + Android Studio version: 3.6.1 or later
-+ minSdkVersion: 19 or later
++ minSdkVersion: 24 or later
 + targetSdkVersion: 31 (recommended)
 + compileSdkVersion: 31 (recommended)
 + Gradle version: 5.6.4 or later (recommended)
