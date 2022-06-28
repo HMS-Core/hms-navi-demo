@@ -23,7 +23,7 @@
             android:id="@+id/m_start_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22.3097031,114.1846103"
+            android:text="31.869103,118.825250"
             android:textSize="11sp" />
     </LinearLayout>
 
@@ -43,7 +43,7 @@
             android:id="@+id/m_end_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22.2642825,114.1801964"
+            android:text="31.860920,118.829391"
             android:textSize="11sp" />
     </LinearLayout>
 
@@ -63,7 +63,7 @@
             android:id="@+id/way_one_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22.25398047,114.1799092"
+            android:text=""
             android:textSize="11sp" />
     </LinearLayout>
 

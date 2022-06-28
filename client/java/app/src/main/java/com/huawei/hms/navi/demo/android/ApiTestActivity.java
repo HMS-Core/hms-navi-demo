@@ -49,13 +49,13 @@ import com.huawei.hms.navi.navibase.model.TurnPointInfo;
 import com.huawei.hms.navi.navibase.model.ZoomPoint;
 import com.huawei.hms.navi.navibase.model.locationstruct.NaviLatLng;
 import com.huawei.hms.navi.navibase.model.locationstruct.NaviLocation;
-import com.huawei.navi.navibase.internal.log.NaviLog;
 import com.huawei.navi.navibase.model.NaviBroadInfo;
 import com.huawei.navi.navibase.model.TypeOfTTSInfo;
 import com.huawei.navi.navibase.model.voicerequest.VoiceFailedResult;
 import com.huawei.navi.navibase.model.voicerequest.VoiceResult;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -78,9 +78,9 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
 
     private Button naviStartBtn;
 
-    private Spinner m_sp_strategy;
+    private Spinner spStrategy;
 
-    private Spinner m_sp_mode;
+    private Spinner spMode;
 
     private VehicleType mVehicleType = VehicleType.DRIVING;
 
@@ -160,8 +160,8 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
         mWayPoint3 = (EditText) findViewById(R.id.way_three_point);
         keyValue = findViewById(R.id.user_apikey_var);
         conversationId = findViewById(R.id.conversation_id_var);
-        m_sp_strategy = findViewById(R.id.sp_navi_strategy);
-        m_sp_mode = findViewById(R.id.sp_navi_mode);
+        spStrategy = findViewById(R.id.sp_navi_strategy);
+        spMode = findViewById(R.id.sp_navi_mode);
         operationEntity = (RadioGroup) findViewById(R.id.operation_entity);
         dr1 = findViewById(R.id.dr1);
         dr2 = findViewById(R.id.dr2);
@@ -197,7 +197,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
             }
         });
 
-        m_sp_strategy.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+        spStrategy.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 clearNaviStrategy();
@@ -248,7 +248,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
             }
         });
 
-        m_sp_mode.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+        spMode.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
@@ -332,7 +332,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
             naviStrategy.setAvoidFerry(avoidFerry);
         }
 
-        NaviLog.i(TAG, "vehicleType: " + mVehicleType.name() + " navi strategy: ");
+        Log.i(TAG, "vehicleType: " + mVehicleType.name() + " navi strategy: ");
 
         routingRequestParam.setFromPoints(fromPoints);
         routingRequestParam.setToPoints(toPoints);
@@ -351,7 +351,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
 
         String clientId = conversationId.getText().toString();
         if (clientId.length() != 32) {
-            NaviLog.e(TAG, "conversationId must be 32 bit");
+            Log.e(TAG, "conversationId must be 32 bit");
             ToastUtil.showToast(this, "conversationId must be 32 bit.");
             return;
         } else {
@@ -384,7 +384,9 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
         try {
             MapNavi.setApiKey("key", URLEncoder.encode(apiKey, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            NaviLog.e(TAG, "Failed to set api Key");
+            Log.e(TAG, "Failed to set api Key: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "Failed to set api Key: " + e.getMessage());
         }
     }
 
@@ -478,6 +480,22 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
         avoidCongestion = false;
     }
 
+    private void showResultForCalculate() {
+        isRouteCalculateSuccess = true;
+        Map<Integer, MapNaviPath> naviPaths = mapNavi.getNaviPaths();
+        String routeInfo = "";
+        Iterator<Map.Entry<Integer, MapNaviPath>> iterator = naviPaths.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, MapNaviPath> entry = iterator.next();
+            Integer routeId = entry.getKey();
+            MapNaviPath naviPath = entry.getValue();
+            routeInfo += " routeId: " + routeId + " routeInfo: " + "{ distance: " + naviPath.getAllLength()
+                    + "m passTime: " + naviPath.getAllTime() + "s trafficNum: " + naviPath.getTrafficLightNum() + "}";
+        }
+        Log.i(TAG, "route size：" + naviPaths.size() + " routeInfo: " + routeInfo);
+        ToastUtil.showToast(this, "route size：" + naviPaths.size() + " " + routeInfo);
+    }
+
     @Override
     public void onArriveDestination(MapNaviStaticInfo mapNaviStaticInfo) {
 
@@ -495,19 +513,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
 
     @Override
     public void onCalculateRouteSuccess(int[] routeIds, MapNaviRoutingTip mapNaviRoutingTip) {
-        isRouteCalculateSuccess = true;
-        Map<Integer, MapNaviPath> naviPaths = mapNavi.getNaviPaths();
-        String routeInfo = "";
-        Iterator<Map.Entry<Integer, MapNaviPath>> iterator = naviPaths.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Integer, MapNaviPath> entry = iterator.next();
-            Integer routeId = entry.getKey();
-            MapNaviPath naviPath = entry.getValue();
-            routeInfo += " routeId: " + routeId + " routeInfo: " + "{ distance: " + naviPath.getAllLength()
-                + "m passTime: " + naviPath.getAllTime() + "s trafficNum: " + naviPath.getTrafficLightNum() + "}";
-        }
-        NaviLog.i(TAG, "route size：" + naviPaths.size() + " routeInfo: " + routeInfo);
-        ToastUtil.showToast(this, "drive route size：" + naviPaths.size() + " " + routeInfo);
+        showResultForCalculate();
     }
 
     @Override
@@ -527,19 +533,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
 
     @Override
     public void onCalculateWalkRouteSuccess(int[] routeIds, MapNaviRoutingTip mapNaviRoutingTip) {
-        isRouteCalculateSuccess = true;
-        Map<Integer, MapNaviPath> naviPaths = mapNavi.getNaviPaths();
-        String routeInfo = "";
-        Iterator<Map.Entry<Integer, MapNaviPath>> iterator = naviPaths.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Integer, MapNaviPath> entry = iterator.next();
-            Integer routeId = entry.getKey();
-            MapNaviPath naviPath = entry.getValue();
-            routeInfo += " routeId: " + routeId + " routeInfo: " + "{ distance: " + naviPath.getAllLength()
-                + "m passTime: " + naviPath.getAllTime() + "s trafficNum: " + naviPath.getTrafficLightNum() + "}";
-        }
-        NaviLog.i(TAG, "route size：" + naviPaths.size() + " routeInfo: " + routeInfo);
-        ToastUtil.showToast(this, "walk route size：" + naviPaths.size() + " " + routeInfo);
+        showResultForCalculate();
     }
 
     @Override
@@ -549,19 +543,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
 
     @Override
     public void onCalculateCycleRouteSuccess(int[] routeIds, MapNaviRoutingTip mapNaviRoutingTip) {
-        isRouteCalculateSuccess = true;
-        Map<Integer, MapNaviPath> naviPaths = mapNavi.getNaviPaths();
-        String routeInfo = "";
-        Iterator<Map.Entry<Integer, MapNaviPath>> iterator = naviPaths.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Integer, MapNaviPath> entry = iterator.next();
-            Integer routeId = entry.getKey();
-            MapNaviPath naviPath = entry.getValue();
-            routeInfo += " routeId: " + routeId + " routeInfo: " + "{ distance: " + naviPath.getAllLength()
-                + "m passTime: " + naviPath.getAllTime() + "s trafficNum: " + naviPath.getTrafficLightNum() + "}";
-        }
-        NaviLog.i(TAG, "route size：" + naviPaths.size() + " routeInfo: " + routeInfo);
-        ToastUtil.showToast(this, "cycle route size：" + naviPaths.size() + " " + routeInfo);
+        showResultForCalculate();
     }
 
     @Override
@@ -607,6 +589,10 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
     @Override
     public void onStartNavi(int code) {
         ToastUtil.showToast(this, "startNavi complete code is :" + code);
+        if (code == 0) {
+            Intent intent = new Intent(this, NaviActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
