@@ -18,7 +18,6 @@ package com.huawei.hms.navi.demo.android;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +34,7 @@ import com.huawei.hms.location.LocationCallback;
 import com.huawei.hms.location.LocationRequest;
 import com.huawei.hms.location.LocationResult;
 import com.huawei.hms.location.LocationServices;
+import com.huawei.hms.navi.demo.android.listener.DefaultMapNaviListener;
 import com.huawei.hms.navi.demo.android.util.ToastUtil;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,30 +42,11 @@ import androidx.core.app.ActivityCompat;
 
 import com.huawei.hms.navi.navibase.MapNavi;
 import com.huawei.hms.navi.navibase.MapNaviListener;
-import com.huawei.hms.navi.navibase.enums.MapNaviRoutingTip;
 import com.huawei.hms.navi.navibase.enums.NaviMode;
-import com.huawei.hms.navi.navibase.model.FurnitureInfo;
-import com.huawei.hms.navi.navibase.model.Incident;
-import com.huawei.hms.navi.navibase.model.IntersectionNotice;
-import com.huawei.hms.navi.navibase.model.JamBubble;
-import com.huawei.hms.navi.navibase.model.MapModelCross;
-import com.huawei.hms.navi.navibase.model.MapNaviStaticInfo;
-import com.huawei.hms.navi.navibase.model.MapServiceAreaInfo;
 import com.huawei.hms.navi.navibase.model.NaviInfo;
-import com.huawei.hms.navi.navibase.model.RouteChangeInfo;
-import com.huawei.hms.navi.navibase.model.SpeedInfo;
-import com.huawei.hms.navi.navibase.model.TriggerNotice;
-import com.huawei.hms.navi.navibase.model.TurnPointInfo;
-import com.huawei.hms.navi.navibase.model.ZoomPoint;
 import com.huawei.hms.navi.navibase.model.locationstruct.NaviLocation;
-import com.huawei.navi.navibase.model.NaviBroadInfo;
-import com.huawei.navi.navibase.model.TypeOfTTSInfo;
-import com.huawei.navi.navibase.model.voicerequest.VoiceFailedResult;
-import com.huawei.navi.navibase.model.voicerequest.VoiceResult;
 
-import java.util.List;
-
-public class NaviActivity extends AppCompatActivity implements MapNaviListener, RadioGroup.OnCheckedChangeListener{
+public class NaviActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener{
     private static final String TAG = "NaviActivity";
 
     private MapNavi mapNavi;
@@ -99,6 +80,23 @@ public class NaviActivity extends AppCompatActivity implements MapNaviListener, 
     private static final int LOCATION_REQUEST_INTERVAL = 1000;
 
     private LocationCallback mNavLocationCallback;
+
+    private MapNaviListener mMapNaviListener = new DefaultMapNaviListener() {
+        @Override
+        public void onLocationChange(NaviLocation naviLocation) {
+            if (naviLocation != null && naviLocation.getCoord() != null) {
+                locationView.setText(naviLocation.getCoord().toString());
+            }
+        }
+
+        @Override
+        public void onNaviInfoUpdate(NaviInfo naviInfo) {
+            if (naviInfo != null) {
+                distanceView.setText(naviInfo.getPathRetainDistance() + " m");
+                timeView.setText(naviInfo.getPathRetainTime() + " s");
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +174,7 @@ public class NaviActivity extends AppCompatActivity implements MapNaviListener, 
 
     private void initMapNavi() {
         mapNavi = MapNavi.getInstance(this);
-        mapNavi.addMapNaviListener(this);
+        mapNavi.addMapNaviListener(mMapNaviListener);
         mapNavi.setLocationContext(this);
     }
 
@@ -225,7 +223,7 @@ public class NaviActivity extends AppCompatActivity implements MapNaviListener, 
     private void stopNavi() {
         if (mapNavi != null) {
             mapNavi.stopNavi();
-            mapNavi.removeMapNaviListener(this);
+            mapNavi.removeMapNaviListener(mMapNaviListener);
             clearForLocation();
             this.finish();
         }
@@ -300,235 +298,10 @@ public class NaviActivity extends AppCompatActivity implements MapNaviListener, 
     }
 
     @Override
-    public void onArriveDestination(MapNaviStaticInfo mapNaviStaticInfo) {
-        ToastUtil.showToast(this, "You have reached your destination.");
-    }
-
-    @Override
-    public void onArrivedWayPoint(int i) {
-
-    }
-
-    @Override
-    public void onCalculateRouteFailure(int i) {
-
-    }
-
-    @Override
-    public void onCalculateRouteSuccess(int[] ints, MapNaviRoutingTip mapNaviRoutingTip) {
-
-    }
-
-    @Override
-    public void onCalBackupGuideSuccess(RouteChangeInfo routeChangeInfo) {
-
-    }
-
-    @Override
-    public void onCalBackupGuideFail() {
-
-    }
-
-    @Override
-    public void onCalculateWalkRouteFailure(int i) {
-
-    }
-
-    @Override
-    public void onCalculateWalkRouteSuccess(int[] ints, MapNaviRoutingTip mapNaviRoutingTip) {
-
-    }
-
-    @Override
-    public void onCalculateCycleRouteFailure(int i) {
-
-    }
-
-    @Override
-    public void onCalculateCycleRouteSuccess(int[] ints, MapNaviRoutingTip mapNaviRoutingTip) {
-
-    }
-
-    @Override
-    public void onGetNavigationText(NaviBroadInfo naviBroadInfo) {
-
-    }
-
-    @Override
-    public void onLocationChange(NaviLocation naviLocation) {
-        if (naviLocation != null && naviLocation.getCoord() != null) {
-            locationView.setText(naviLocation.getCoord().toString());
-        }
-    }
-
-    @Override
-    public void onNaviInfoUpdate(NaviInfo naviInfo) {
-        if (naviInfo != null) {
-            distanceView.setText(naviInfo.getPathRetainDistance() + " m");
-            timeView.setText(naviInfo.getPathRetainTime() + " s");
-        }
-    }
-
-    @Override
-    public void onLineLimitSpeedUpdate(SpeedInfo speedInfo) {
-
-    }
-
-    @Override
-    public void onServiceAreaUpdate(MapServiceAreaInfo[] mapServiceAreaInfos) {
-
-    }
-
-    @Override
-    public void onReCalculateRouteForYaw() {
-
-    }
-
-    @Override
-    public void onDriveRoutesChanged() {
-
-    }
-
-    @Override
-    public void onExpiredBackupRoute(List<Integer> list) {
-
-    }
-
-    @Override
-    public void onStartNavi(int i) {
-
-    }
-
-    @Override
-    public void onStartNaviSuccess() {
-
-    }
-
-    @Override
-    public void onTrafficStatusUpdate() {
-
-    }
-
-    @Override
-    public void onLaneInfoHide() {
-
-    }
-
-    @Override
-    public void onLaneInfoShow(Bitmap bitmap) {
-
-    }
-
-    @Override
-    public void onCrossHide() {
-
-    }
-
-    @Override
-    public void onCrossShow(IntersectionNotice intersectionNotice) {
-
-    }
-
-    @Override
-    public void onFullScreenGuideHide() {
-
-    }
-
-    @Override
-    public void onFullScreenGuideShow(TriggerNotice triggerNotice) {
-
-    }
-
-    @Override
-    public void onModeCrossShow(MapModelCross mapModelCross) {
-
-    }
-
-    @Override
-    public void onModeCrossHide() {
-
-    }
-
-    @Override
-    public void onNaviArrowUpdate(int i, int i1) {
-
-    }
-
-    @Override
-    public void onAutoZoomUpdate(ZoomPoint zoomPoint) {
-
-    }
-
-    @Override
-    public void onFurnitureInfoUpdate(FurnitureInfo[] furnitureInfos) {
-
-    }
-
-    @Override
-    public void onJamBubbleInfo(JamBubble jamBubble) {
-
-    }
-
-    @Override
-    public void onGetMilestoneDisappear(int i) {
-
-    }
-
-    @Override
-    public void onSendLocationSuccess() {
-
-    }
-
-    @Override
-    public void onSendLocationFailed() {
-
-    }
-
-    @Override
-    public void getVoiceByteSuccess(VoiceResult voiceResult) {
-
-    }
-
-    @Override
-    public void getVoiceByteFailed(VoiceFailedResult voiceFailedResult) {
-
-    }
-
-    @Override
-    public void getAccessTypeOfTTSSuccess(TypeOfTTSInfo typeOfTTSInfo) {
-
-    }
-
-    @Override
-    public void getAccessTypeOfTTSFailed(int i) {
-
-    }
-
-    @Override
-    public void onIncidentUpdate(Incident incident) {
-
-    }
-
-    @Override
-    public void onEnterTunnel() {
-
-    }
-
-    @Override
-    public void onLeaveTunnel() {
-
-    }
-
-    @Override
-    public void onSpecialTurnPointHide(TurnPointInfo turnPointInfo) {
-
-    }
-
-    @Override
     protected void onDestroy() {
         if (mapNavi != null) {
             mapNavi.stopNavi();
-            mapNavi.removeMapNaviListener(this);
+            mapNavi.removeMapNaviListener(mMapNaviListener);
         }
         clearForLocation();
         super.onDestroy();

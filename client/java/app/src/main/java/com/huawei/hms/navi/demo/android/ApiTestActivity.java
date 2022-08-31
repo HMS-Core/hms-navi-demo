@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.huawei.hms.navi.demo.android.listener.DefaultMapNaviListener;
 import com.huawei.hms.navi.demo.android.util.ToastUtil;
 import com.huawei.hms.navi.navibase.MapNavi;
 import com.huawei.hms.navi.navibase.MapNaviListener;
@@ -30,33 +31,14 @@ import com.huawei.hms.navi.navibase.enums.MapNaviRoutingTip;
 import com.huawei.hms.navi.navibase.enums.VehicleType;
 import com.huawei.hms.navi.navibase.model.ClientParas;
 import com.huawei.hms.navi.navibase.model.DevServerSiteConstant;
-import com.huawei.hms.navi.navibase.model.FurnitureInfo;
-import com.huawei.hms.navi.navibase.model.Incident;
-import com.huawei.hms.navi.navibase.model.IntersectionNotice;
-import com.huawei.hms.navi.navibase.model.JamBubble;
-import com.huawei.hms.navi.navibase.model.MapModelCross;
 import com.huawei.hms.navi.navibase.model.MapNaviPath;
-import com.huawei.hms.navi.navibase.model.MapNaviStaticInfo;
-import com.huawei.hms.navi.navibase.model.MapServiceAreaInfo;
-import com.huawei.hms.navi.navibase.model.NaviInfo;
 import com.huawei.hms.navi.navibase.model.NaviRequestPoint;
 import com.huawei.hms.navi.navibase.model.NaviStrategy;
-import com.huawei.hms.navi.navibase.model.RouteChangeInfo;
 import com.huawei.hms.navi.navibase.model.RoutingRequestParam;
-import com.huawei.hms.navi.navibase.model.SpeedInfo;
-import com.huawei.hms.navi.navibase.model.TriggerNotice;
-import com.huawei.hms.navi.navibase.model.TurnPointInfo;
-import com.huawei.hms.navi.navibase.model.ZoomPoint;
 import com.huawei.hms.navi.navibase.model.locationstruct.NaviLatLng;
-import com.huawei.hms.navi.navibase.model.locationstruct.NaviLocation;
-import com.huawei.navi.navibase.model.NaviBroadInfo;
-import com.huawei.navi.navibase.model.TypeOfTTSInfo;
-import com.huawei.navi.navibase.model.voicerequest.VoiceFailedResult;
-import com.huawei.navi.navibase.model.voicerequest.VoiceResult;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -70,13 +52,15 @@ import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 
-public class ApiTestActivity extends Activity implements MapNaviListener, RadioGroup.OnCheckedChangeListener {
+public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
 
     private static final String TAG = "ApiTestActivity";
 
     private Button routingStartBtn;
 
     private Button naviStartBtn;
+
+    private Button busBtn;
 
     private Spinner spStrategy;
 
@@ -99,8 +83,6 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
     private EditText mWayPoint1;
 
     private EditText mWayPoint2;
-
-    private EditText mWayPoint3;
 
     private EditText keyValue;
 
@@ -140,6 +122,47 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
 
     private boolean isRouteCalculateSuccess = false;
 
+    private MapNaviListener mapNaviListener = new DefaultMapNaviListener() {
+        @Override
+        public void onCalculateRouteFailure(int errCode) {
+            ToastUtil.showToast(ApiTestActivity.this, "drive cal fail, error: " + errCode);
+        }
+
+        @Override
+        public void onCalculateRouteSuccess(int[] routeIds, MapNaviRoutingTip mapNaviRoutingTip) {
+            showResultForCalculate();
+        }
+
+        @Override
+        public void onCalculateWalkRouteFailure(int errorCode) {
+            ToastUtil.showToast(ApiTestActivity.this, "walk cal fail, error: " + errorCode);
+        }
+
+        @Override
+        public void onCalculateWalkRouteSuccess(int[] routeIds, MapNaviRoutingTip mapNaviRoutingTip) {
+            showResultForCalculate();
+        }
+
+        @Override
+        public void onCalculateCycleRouteFailure(int errorCode) {
+            ToastUtil.showToast(ApiTestActivity.this, "cycle cal fail, error: " + errorCode);
+        }
+
+        @Override
+        public void onCalculateCycleRouteSuccess(int[] routeIds, MapNaviRoutingTip mapNaviRoutingTip) {
+            showResultForCalculate();
+        }
+
+        @Override
+        public void onStartNavi(int code) {
+            ToastUtil.showToast(ApiTestActivity.this, "startNavi complete code is :" + code);
+            if (code == 0) {
+                Intent intent = new Intent(ApiTestActivity.this, NaviActivity.class);
+                startActivity(intent);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,11 +176,11 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
     private void initView() {
         routingStartBtn = findViewById(R.id.btn_routing);
         naviStartBtn = findViewById(R.id.btn_start_navi);
+        busBtn = findViewById(R.id.btn_bus_page);
         mStartPoint = (EditText) findViewById(R.id.m_start_point);
         mEndPoint = (EditText) findViewById(R.id.m_end_point);
         mWayPoint1 = (EditText) findViewById(R.id.way_one_point);
         mWayPoint2 = (EditText) findViewById(R.id.way_two_point);
-        mWayPoint3 = (EditText) findViewById(R.id.way_three_point);
         keyValue = findViewById(R.id.user_apikey_var);
         conversationId = findViewById(R.id.conversation_id_var);
         spStrategy = findViewById(R.id.sp_navi_strategy);
@@ -182,7 +205,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
         naviStartBtn.setOnClickListener(v -> {
             if (isRouteCalculateSuccess) {
                 if (mVehicleType == VehicleType.DRIVING) {
-                    mapNavi.calculateDriveGuide(false);
+                    mapNavi.calculateDriveGuide();
                 }
 
                 if (mVehicleType == VehicleType.WALKING) {
@@ -195,6 +218,15 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
             } else {
                 ToastUtil.showToast(this, "please calculate route first");
             }
+        });
+
+        busBtn.setOnClickListener(v -> {
+            if (mapNavi != null) {
+                mapNavi.removeMapNaviListener(mapNaviListener);
+            }
+
+            Intent intent = new Intent(this, BusResultActivity.class);
+            startActivity(intent);
         });
 
         spStrategy.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
@@ -275,7 +307,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
 
     private void initMapNavi() {
         mapNavi = MapNavi.getInstance(this);
-        mapNavi.addMapNaviListener(this);
+        mapNavi.addMapNaviListener(mapNaviListener);
     }
 
     private void getRequestParamForRouting() {
@@ -285,10 +317,8 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
         List<String> wayPointStrList = new ArrayList<>();
         String wayPointStr1 = mWayPoint1.getText().toString().trim();
         String wayPointStr2 = mWayPoint2.getText().toString().trim();
-        String wayPointStr3 = mWayPoint3.getText().toString().trim();
         wayPointStrList.add(wayPointStr1);
         wayPointStrList.add(wayPointStr2);
-        wayPointStrList.add(wayPointStr3);
         int i = latlngCheck(startStr, endStr, wayPointStrList);
         if (i != 0) {
             ToastUtil.showToast(this, "input point is invalids");
@@ -382,7 +412,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
             return;
         }
         try {
-            MapNavi.setApiKey("key", URLEncoder.encode(apiKey, "UTF-8"));
+            MapNavi.setApiKey(URLEncoder.encode(apiKey, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Failed to set api Key: " + e.getMessage());
         } catch (IllegalArgumentException e) {
@@ -497,232 +527,6 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
     }
 
     @Override
-    public void onArriveDestination(MapNaviStaticInfo mapNaviStaticInfo) {
-
-    }
-
-    @Override
-    public void onArrivedWayPoint(int wayid) {
-
-    }
-
-    @Override
-    public void onCalculateRouteFailure(int errCode) {
-        ToastUtil.showToast(this, "drive cal fail, error: " + errCode);
-    }
-
-    @Override
-    public void onCalculateRouteSuccess(int[] routeIds, MapNaviRoutingTip mapNaviRoutingTip) {
-        showResultForCalculate();
-    }
-
-    @Override
-    public void onCalBackupGuideSuccess(RouteChangeInfo routeChangeInfo) {
-
-    }
-
-    @Override
-    public void onCalBackupGuideFail() {
-
-    }
-
-    @Override
-    public void onCalculateWalkRouteFailure(int errorCode) {
-        ToastUtil.showToast(this, "walk cal fail, error: " + errorCode);
-    }
-
-    @Override
-    public void onCalculateWalkRouteSuccess(int[] routeIds, MapNaviRoutingTip mapNaviRoutingTip) {
-        showResultForCalculate();
-    }
-
-    @Override
-    public void onCalculateCycleRouteFailure(int errorCode) {
-        ToastUtil.showToast(this, "cycle cal fail, error: " + errorCode);
-    }
-
-    @Override
-    public void onCalculateCycleRouteSuccess(int[] routeIds, MapNaviRoutingTip mapNaviRoutingTip) {
-        showResultForCalculate();
-    }
-
-    @Override
-    public void onGetNavigationText(NaviBroadInfo info) {
-
-    }
-
-    @Override
-    public void onLocationChange(NaviLocation location) {
-
-    }
-
-    @Override
-    public void onNaviInfoUpdate(NaviInfo naviInfo) {
-
-    }
-
-    @Override
-    public void onLineLimitSpeedUpdate(SpeedInfo speedInfo) {
-
-    }
-
-    @Override
-    public void onServiceAreaUpdate(MapServiceAreaInfo[] infoArray) {
-
-    }
-
-    @Override
-    public void onReCalculateRouteForYaw() {
-
-    }
-
-    @Override
-    public void onDriveRoutesChanged() {
-
-    }
-
-    @Override
-    public void onExpiredBackupRoute(List<Integer> pathId) {
-
-    }
-
-    @Override
-    public void onStartNavi(int code) {
-        ToastUtil.showToast(this, "startNavi complete code is :" + code);
-        if (code == 0) {
-            Intent intent = new Intent(this, NaviActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onStartNaviSuccess() {
-
-    }
-
-    @Override
-    public void onTrafficStatusUpdate() {
-
-    }
-
-    @Override
-    public void onLaneInfoHide() {
-
-    }
-
-    @Override
-    public void onLaneInfoShow(Bitmap laneLineImage) {
-
-    }
-
-    @Override
-    public void onCrossHide() {
-
-    }
-
-    @Override
-    public void onCrossShow(IntersectionNotice notice) {
-
-    }
-
-    @Override
-    public void onFullScreenGuideHide() {
-
-    }
-
-    @Override
-    public void onFullScreenGuideShow(TriggerNotice notice) {
-
-    }
-
-    @Override
-    public void onModeCrossShow(MapModelCross cross) {
-
-    }
-
-    @Override
-    public void onModeCrossHide() {
-
-    }
-
-    @Override
-    public void onNaviArrowUpdate(int begIndex, int endIndex) {
-
-    }
-
-    @Override
-    public void onAutoZoomUpdate(ZoomPoint zoomPoint) {
-
-    }
-
-    @Override
-    public void onFurnitureInfoUpdate(FurnitureInfo[] furnitureInfos) {
-
-    }
-
-
-    @Override
-    public void onJamBubbleInfo(JamBubble jamBubble) {
-
-    }
-
-    @Override
-    public void onGetMilestoneDisappear(int milestone) {
-
-    }
-
-    @Override
-    public void onSendLocationSuccess() {
-
-    }
-
-    @Override
-    public void onSendLocationFailed() {
-
-    }
-
-    @Override
-    public void getVoiceByteSuccess(VoiceResult voiceResult) {
-
-    }
-
-    @Override
-    public void getVoiceByteFailed(VoiceFailedResult voiceFailedResult) {
-
-    }
-
-    @Override
-    public void getAccessTypeOfTTSSuccess(TypeOfTTSInfo typeOfTTSInfo) {
-
-    }
-
-    @Override
-    public void getAccessTypeOfTTSFailed(int errorCode) {
-
-    }
-
-    @Override
-    public void onIncidentUpdate(Incident incident) {
-
-    }
-
-    @Override
-    public void onEnterTunnel() {
-
-    }
-
-    @Override
-    public void onLeaveTunnel() {
-
-    }
-
-    @Override
-    public void onSpecialTurnPointHide(TurnPointInfo turnPointInfo) {
-
-    }
-
-
-    @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "============onResume");
@@ -738,7 +542,7 @@ public class ApiTestActivity extends Activity implements MapNaviListener, RadioG
     protected void onDestroy() {
         super.onDestroy();
         if (mapNavi != null) {
-            mapNavi.removeMapNaviListener(this);
+            mapNavi.removeMapNaviListener(mapNaviListener);
             mapNavi.destroy();
         }
         Log.d(TAG, "============onDestroy");

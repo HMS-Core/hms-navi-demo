@@ -27,6 +27,9 @@
         <activity
             android:name="com.huawei.hms.navi.demo.android.NaviActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.huawei.hms.navi.demo.android.BusResultActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
