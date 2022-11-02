@@ -4,6 +4,48 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Operation entity"
+        android:textSize="11sp" />
+
+    <RadioGroup
+        android:id="@+id/bus_operation_entity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/bus_dr1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="China"
+            android:checked="true"
+            />
+
+        <RadioButton
+            android:id="@+id/bus_dr2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asia, Africa and Latin America"
+            />
+
+        <RadioButton
+            android:id="@+id/bus_dr3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Europe"
+            />
+
+        <RadioButton
+            android:id="@+id/bus_dr4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Russia"
+            />
+    </RadioGroup>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

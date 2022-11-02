@@ -23,7 +23,7 @@
             android:id="@+id/m_start_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="31.869103,118.825250"
+            android:text="22.303450,114.174664"
             android:textSize="11sp" />
     </LinearLayout>
 
@@ -43,7 +43,7 @@
             android:id="@+id/m_end_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="31.860920,118.829391"
+            android:text="22.305932,114.183719"
             android:textSize="11sp" />
     </LinearLayout>
 

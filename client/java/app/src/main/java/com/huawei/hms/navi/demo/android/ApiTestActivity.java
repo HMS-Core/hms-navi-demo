@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.huawei.hms.navi.demo.android.listener.DefaultMapNaviListener;
+import com.huawei.hms.navi.demo.android.util.CommonUtil;
 import com.huawei.hms.navi.demo.android.util.ToastUtil;
 import com.huawei.hms.navi.navibase.MapNavi;
 import com.huawei.hms.navi.navibase.MapNaviListener;
@@ -169,7 +170,7 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
         setContentView(R.layout.activity_api_test);
         initView();
         initListener();
-        initServerSiteAndApiKey();
+        initServerSite();
         initMapNavi();
     }
 
@@ -420,7 +421,7 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
         }
     }
 
-    private void initServerSiteAndApiKey() {
+    private void initServerSite() {
         if (dr1.isChecked()) {
             MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
         }
@@ -550,22 +551,6 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-        switch (checkedId) {
-            case R.id.dr1:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
-                break;
-            case R.id.dr2:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR2);
-                break;
-            case R.id.dr3:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR3);
-                break;
-            case R.id.dr4:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR4);
-                break;
-            default:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
-                break;
-        }
+        CommonUtil.changeServerSite(checkedId);
     }
 }

@@ -10,6 +10,7 @@ import com.huawei.hms.navi.navibase.enums.MapNaviSettingEnums;
 import com.huawei.hms.navi.navibase.model.FurnitureInfo;
 import com.huawei.hms.navi.navibase.model.FutureEta;
 import com.huawei.hms.navi.navibase.model.HighwayExitInfo;
+import com.huawei.hms.navi.navibase.model.HistoryTrafficInfo;
 import com.huawei.hms.navi.navibase.model.Incident;
 import com.huawei.hms.navi.navibase.model.IntersectionNotice;
 import com.huawei.hms.navi.navibase.model.JamBubble;
@@ -21,6 +22,7 @@ import com.huawei.hms.navi.navibase.model.MapServiceAreaInfo;
 import com.huawei.hms.navi.navibase.model.NaviBroadInfo;
 import com.huawei.hms.navi.navibase.model.NaviInfo;
 import com.huawei.hms.navi.navibase.model.RouteChangeInfo;
+import com.huawei.hms.navi.navibase.model.RouteRecommendInfo;
 import com.huawei.hms.navi.navibase.model.SpeedInfo;
 import com.huawei.hms.navi.navibase.model.TriggerNotice;
 import com.huawei.hms.navi.navibase.model.TurnPointInfo;
@@ -281,6 +283,16 @@ public class DefaultMapNaviListener implements MapNaviListener {
     }
 
     @Override
+    public void onGetHistoryTrafficSuccess(List<HistoryTrafficInfo> list) {
+
+    }
+
+    @Override
+    public void onGetHistoryTrafficFailed(int i) {
+
+    }
+
+    @Override
     public void onIncidentUpdate(Incident incident) {
 
     }
@@ -337,6 +349,11 @@ public class DefaultMapNaviListener implements MapNaviListener {
 
     @Override
     public void onUpdateWaypointsFail() {
+
+    }
+
+    @Override
+    public void onRecommendBetterRoute(RouteRecommendInfo routeRecommendInfo) {
 
     }
 }

@@ -22,15 +22,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.annotation.Nullable;
 
 import com.huawei.hms.navi.demo.android.listener.DefaultMapNaviListener;
+import com.huawei.hms.navi.demo.android.util.CommonUtil;
 import com.huawei.hms.navi.demo.android.util.ToastUtil;
 import com.huawei.hms.navi.navibase.MapNavi;
 import com.huawei.hms.navi.navibase.MapNaviListener;
 import com.huawei.hms.navi.navibase.enums.VehicleType;
 import com.huawei.hms.navi.navibase.model.ClientParas;
+import com.huawei.hms.navi.navibase.model.DevServerSiteConstant;
 import com.huawei.hms.navi.navibase.model.bus.BusNaviPathBean;
 import com.huawei.hms.navi.navibase.model.busnavirequest.BusCqlRequest;
 import com.huawei.hms.navi.navibase.model.busnavirequest.Destination;
@@ -39,8 +43,8 @@ import com.huawei.hms.navi.navibase.model.busnavirequest.Origin;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class BusResultActivity extends Activity implements View.OnClickListener {
-    private String TAG = "BusResultActivity";
+public class BusResultActivity extends Activity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener {
+    private static final String TAG = "BusResultActivity";
 
     private Button busPlan;
 
@@ -62,6 +66,16 @@ public class BusResultActivity extends Activity implements View.OnClickListener 
 
     private EditText conversationId;
 
+    private RadioButton dr1;
+
+    private RadioButton dr2;
+
+    private RadioButton dr3;
+
+    private RadioButton dr4;
+
+    private RadioGroup operationEntity;
+
     private MapNavi mapNavi;
 
     private MapNaviListener mapNaviListener = new DefaultMapNaviListener() {
@@ -82,6 +96,7 @@ public class BusResultActivity extends Activity implements View.OnClickListener 
         setContentView(R.layout.activity_bus_plan_result);
         initNavi();
         initView();
+        initServerSite();
     }
 
     private void initView() {
@@ -97,11 +112,35 @@ public class BusResultActivity extends Activity implements View.OnClickListener 
         pedestrianSpeed = findViewById(R.id.bus_pedestrianSpeed);
         keyValue = findViewById(R.id.user_apikey_var2);
         conversationId = findViewById(R.id.conversation_id_var2);
+
+        dr1 = findViewById(R.id.bus_dr1);
+        dr2 = findViewById(R.id.bus_dr2);
+        dr3 = findViewById(R.id.bus_dr3);
+        dr4 = findViewById(R.id.bus_dr4);
+        operationEntity = (RadioGroup) findViewById(R.id.bus_operation_entity);
+        if (operationEntity != null) {
+            operationEntity.setOnCheckedChangeListener(this);
+        }
     }
 
     private void initNavi() {
         mapNavi = MapNavi.getInstance(this);
         mapNavi.addMapNaviListener(mapNaviListener);
+    }
+
+    private void initServerSite() {
+        if (dr1.isChecked()) {
+            MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
+        }
+        if (dr2.isChecked()) {
+            MapNavi.setDevServerSite(DevServerSiteConstant.DR2);
+        }
+        if (dr3.isChecked()) {
+            MapNavi.setDevServerSite(DevServerSiteConstant.DR3);
+        }
+        if (dr4.isChecked()) {
+            MapNavi.setDevServerSite(DevServerSiteConstant.DR4);
+        }
     }
 
     @Override
@@ -192,6 +231,11 @@ public class BusResultActivity extends Activity implements View.OnClickListener 
         } catch (IllegalArgumentException e) {
             Log.e(TAG, "Failed to set api Key: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+        CommonUtil.changeBusServerSite(checkedId);
     }
 
     @Override
