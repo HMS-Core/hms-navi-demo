@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.huawei.hms.navi.demo.android">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -8,13 +9,14 @@
 
     <application
         android:allowBackup="true"
+        tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NaviSampleForAndroid">
         <activity
-            android:name=".MainActivity"
+            android:name="com.huawei.hms.navi.demo.android.MainActivity"
             android:theme="@style/Theme.NaviSampleForAndroid.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

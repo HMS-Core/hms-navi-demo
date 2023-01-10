@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.huawei.hms.navi.demo.android.listener.DefaultMapNaviListener;
+import com.huawei.hms.navi.demo.android.setting.CommonSetting;
 import com.huawei.hms.navi.demo.android.util.CommonUtil;
 import com.huawei.hms.navi.demo.android.util.ToastUtil;
 import com.huawei.hms.navi.navibase.MapNavi;
@@ -158,6 +159,7 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
         public void onStartNavi(int code) {
             ToastUtil.showToast(ApiTestActivity.this, "startNavi complete code is :" + code);
             if (code == 0) {
+                isRouteCalculateSuccess = false;
                 Intent intent = new Intent(ApiTestActivity.this, NaviActivity.class);
                 startActivity(intent);
             }
@@ -170,8 +172,8 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
         setContentView(R.layout.activity_api_test);
         initView();
         initListener();
-        initServerSite();
         initMapNavi();
+        initApiTestSite();
     }
 
     private void initView() {
@@ -222,10 +224,6 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
         });
 
         busBtn.setOnClickListener(v -> {
-            if (mapNavi != null) {
-                mapNavi.removeMapNaviListener(mapNaviListener);
-            }
-
             Intent intent = new Intent(this, BusResultActivity.class);
             startActivity(intent);
         });
@@ -421,21 +419,6 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
         }
     }
 
-    private void initServerSite() {
-        if (dr1.isChecked()) {
-            MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
-        }
-        if (dr2.isChecked()) {
-            MapNavi.setDevServerSite(DevServerSiteConstant.DR2);
-        }
-        if (dr3.isChecked()) {
-            MapNavi.setDevServerSite(DevServerSiteConstant.DR3);
-        }
-        if (dr4.isChecked()) {
-            MapNavi.setDevServerSite(DevServerSiteConstant.DR4);
-        }
-    }
-
     private int latlngCheck(String startStr, String endStr, List<String> wayPointStrList) {
         if (TextUtils.isEmpty(startStr)) {
             ToastUtil.showToast(this, "Enter the start point.");
@@ -530,7 +513,34 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
     @Override
     protected void onResume() {
         super.onResume();
+        initApiTestSite();
         Log.d(TAG, "============onResume");
+    }
+
+    private void initApiTestSite() {
+        String site = CommonSetting.getServerSite();
+        switch (site) {
+            case DevServerSiteConstant.DR1:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
+                dr1.setChecked(true);
+                break;
+            case DevServerSiteConstant.DR2:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR2);
+                dr2.setChecked(true);
+                break;
+            case DevServerSiteConstant.DR3:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR3);
+                dr3.setChecked(true);
+                break;
+            case DevServerSiteConstant.DR4:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR4);
+                dr4.setChecked(true);
+                break;
+            default:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
+                dr1.setChecked(true);
+                break;
+        }
     }
 
     @Override

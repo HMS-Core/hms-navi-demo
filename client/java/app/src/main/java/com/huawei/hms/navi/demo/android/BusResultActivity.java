@@ -28,6 +28,7 @@ import android.widget.RadioGroup;
 import androidx.annotation.Nullable;
 
 import com.huawei.hms.navi.demo.android.listener.DefaultMapNaviListener;
+import com.huawei.hms.navi.demo.android.setting.CommonSetting;
 import com.huawei.hms.navi.demo.android.util.CommonUtil;
 import com.huawei.hms.navi.demo.android.util.ToastUtil;
 import com.huawei.hms.navi.navibase.MapNavi;
@@ -96,7 +97,7 @@ public class BusResultActivity extends Activity implements View.OnClickListener,
         setContentView(R.layout.activity_bus_plan_result);
         initNavi();
         initView();
-        initServerSite();
+        initBusSite();
     }
 
     private void initView() {
@@ -128,18 +129,29 @@ public class BusResultActivity extends Activity implements View.OnClickListener,
         mapNavi.addMapNaviListener(mapNaviListener);
     }
 
-    private void initServerSite() {
-        if (dr1.isChecked()) {
-            MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
-        }
-        if (dr2.isChecked()) {
-            MapNavi.setDevServerSite(DevServerSiteConstant.DR2);
-        }
-        if (dr3.isChecked()) {
-            MapNavi.setDevServerSite(DevServerSiteConstant.DR3);
-        }
-        if (dr4.isChecked()) {
-            MapNavi.setDevServerSite(DevServerSiteConstant.DR4);
+    private void initBusSite() {
+        String busSite = CommonSetting.getServerSite();
+        switch (busSite) {
+            case DevServerSiteConstant.DR4:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR4);
+                dr4.setChecked(true);
+                break;
+            case DevServerSiteConstant.DR3:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR3);
+                dr3.setChecked(true);
+                break;
+            case DevServerSiteConstant.DR2:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR2);
+                dr2.setChecked(true);
+                break;
+            case DevServerSiteConstant.DR1:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
+                dr1.setChecked(true);
+                break;
+            default:
+                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
+                dr1.setChecked(true);
+                break;
         }
     }
 
@@ -235,7 +247,7 @@ public class BusResultActivity extends Activity implements View.OnClickListener,
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-        CommonUtil.changeBusServerSite(checkedId);
+        CommonUtil.changeServerSite(checkedId);
     }
 
     @Override
