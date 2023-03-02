@@ -106,12 +106,12 @@ public class NaviActivity extends AppCompatActivity implements RadioGroup.OnChec
         initView();
         initListener();
         initLocationType();
-        initLocationPemission();
+        initLocationPermission();
     }
 
     // You can visit this website to learn how to integrate LocationKit.
     // https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/location-develop-steps-0000001050746143
-    private void initLocationPemission() {
+    private void initLocationPermission() {
         // Permissions required for dynamic application
         // Android SDK<=28
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {

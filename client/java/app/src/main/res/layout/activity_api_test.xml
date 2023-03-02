@@ -184,26 +184,6 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/conversation_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="conversationId (32-bit): "
-            android:textSize="11sp" />
-
-        <EditText
-            android:id="@+id/conversation_id_var"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12345678123456781234567812345678"
-            android:textSize="11sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
             android:id="@+id/user_apikey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

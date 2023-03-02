@@ -31,7 +31,6 @@ import com.huawei.hms.navi.navibase.MapNavi;
 import com.huawei.hms.navi.navibase.MapNaviListener;
 import com.huawei.hms.navi.navibase.enums.MapNaviRoutingTip;
 import com.huawei.hms.navi.navibase.enums.VehicleType;
-import com.huawei.hms.navi.navibase.model.ClientParas;
 import com.huawei.hms.navi.navibase.model.DevServerSiteConstant;
 import com.huawei.hms.navi.navibase.model.MapNaviPath;
 import com.huawei.hms.navi.navibase.model.NaviRequestPoint;
@@ -87,8 +86,6 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
     private EditText mWayPoint2;
 
     private EditText keyValue;
-
-    private EditText conversationId;
 
     private RadioButton dr1;
 
@@ -185,7 +182,6 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
         mWayPoint1 = (EditText) findViewById(R.id.way_one_point);
         mWayPoint2 = (EditText) findViewById(R.id.way_two_point);
         keyValue = findViewById(R.id.user_apikey_var);
-        conversationId = findViewById(R.id.conversation_id_var);
         spStrategy = findViewById(R.id.sp_navi_strategy);
         spMode = findViewById(R.id.sp_navi_mode);
         operationEntity = (RadioGroup) findViewById(R.id.operation_entity);
@@ -378,16 +374,6 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
             setApiKey(keyValue.getText().toString().trim());
         }
 
-        String clientId = conversationId.getText().toString();
-        if (clientId.length() != 32) {
-            Log.e(TAG, "conversationId must be 32 bit");
-            ToastUtil.showToast(this, "conversationId must be 32 bit.");
-            return;
-        } else {
-            ClientParas clientParas = new ClientParas();
-            clientParas.setConversationId(clientId);
-            MapNavi.initSettings(clientParas);
-        }
         if (mapNavi != null) {
             mapNavi.setVehicleType(mVehicleType);
             switch (mVehicleType) {
@@ -407,11 +393,11 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
     }
 
     private void setApiKey(String apiKey) {
-        if(apiKey == null) {
+        if(apiKey == null || mapNavi == null) {
             return;
         }
         try {
-            MapNavi.setApiKey(URLEncoder.encode(apiKey, "UTF-8"));
+            mapNavi.setApiKey(URLEncoder.encode(apiKey, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Failed to set api Key: " + e.getMessage());
         } catch (IllegalArgumentException e) {
@@ -518,26 +504,26 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
     }
 
     private void initApiTestSite() {
+        if (mapNavi == null) {
+            return;
+        }
+
         String site = CommonSetting.getServerSite();
         switch (site) {
-            case DevServerSiteConstant.DR1:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
-                dr1.setChecked(true);
-                break;
             case DevServerSiteConstant.DR2:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR2);
+                mapNavi.setDevServerSite(DevServerSiteConstant.DR2);
                 dr2.setChecked(true);
                 break;
             case DevServerSiteConstant.DR3:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR3);
+                mapNavi.setDevServerSite(DevServerSiteConstant.DR3);
                 dr3.setChecked(true);
                 break;
             case DevServerSiteConstant.DR4:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR4);
+                mapNavi.setDevServerSite(DevServerSiteConstant.DR4);
                 dr4.setChecked(true);
                 break;
             default:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
+                mapNavi.setDevServerSite(DevServerSiteConstant.DR1);
                 dr1.setChecked(true);
                 break;
         }
@@ -561,6 +547,6 @@ public class ApiTestActivity extends Activity implements RadioGroup.OnCheckedCha
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-        CommonUtil.changeServerSite(checkedId);
+        CommonUtil.changeServerSite(checkedId, mapNavi);
     }
 }

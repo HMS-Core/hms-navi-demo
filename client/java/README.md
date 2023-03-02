@@ -20,7 +20,7 @@ Introduction
 Navi Kit provides an SDK for navigation development, empowering you to integrate navigation functions into your app with ease to improve user experience.
 
 Navi Kit mainly provides the following functions:
-- Extensive navigation modes: Navi Kit can intelligently plan routes for driving, walking, and cycling and avoid congested, restricted, and rough roads. It can also recommend the faster, safer, and more accurate routes in real time.
+- Extensive navigation modes: Navi Kit can intelligently plan routes for driving, walking, cycling, and public transit and avoid congested, restricted, and rough roads. It can also recommend the faster, safer, and more accurate routes in real time.
 - Detailed guidance: Navi Kit can provide full-screen lane-level guidance and enlarged intersection views to help users find the desired lane at complex intersections, preventing them from making a wrong turn.
 - Timely driving reminder: Navi Kit can obtain road information such as the speed limit, traffic cameras, traffic conditions, and unexpected incidents in real time and remind users in a timely manner to safeguard driving safety. Users can also report such information to gain access to a more accurate navigation service in real time.
 - Accurate road network monitoring: Navi Kit can monitor parallel main and auxiliary roads and overlapped roads on and under bridges in real time.
@@ -39,12 +39,12 @@ In Android Studio, click **Open an existing Android Studio project** and select 
 
 You can use the **gradlew build** command to directly build the project.
 
-Then, you need to create an app in AppGallery Connect, obtain the **agconnect-services.json** file, and add it to the project. You also need to generate a signing certificate fingerprint, add the signing certificate file to the project, and add related configurations to the **build.gradle** file. For details, please refer to [Configuring App Information in AppGallery Connect](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/android-sdk-config-agc-0000001214231910).
+Then, you need to create an app in AppGallery Connect, obtain the **agconnect-services.json** file, and add it to the project. You also need to generate a signing certificate fingerprint, add the signing certificate file to the project, and add related configurations to the **build.gradle** file. For details, please refer to [Configuring App Information in AppGallery Connect](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/android-sdk-config-agc-0000001214231910).
 
 To learn more, refer to the following documents:
 
-- [Development Guide](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/introduction-0000001185010752)
-- [API Reference](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-References/api-summary-desc-0000001187429984)
+- [Development Guide](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001185010752)
+- [API Reference](https://developer.huawei.com/consumer/en/doc/development/HMSCore-References/api-summary-desc-0000001187429984)
 
 Environment Requirements
 -------
@@ -56,7 +56,7 @@ Environment Requirements
 + compileSdkVersion: 31 (recommended)
 + Gradle version: 5.6.4 or later (recommended)
 + Android Gradle plugin version: 3.6.0 or later
-+ Test device: a Huawei phone or tablet running EMUI 5.0 or later, or a non-Huawei phone running Android 7.0 to 12
++ Test device: a Huawei phone or tablet running EMUI 5.0 or later, or a non-Huawei phone running Android 7.0 or later
 
 ## Result
 

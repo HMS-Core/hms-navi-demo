@@ -34,7 +34,6 @@ import com.huawei.hms.navi.demo.android.util.ToastUtil;
 import com.huawei.hms.navi.navibase.MapNavi;
 import com.huawei.hms.navi.navibase.MapNaviListener;
 import com.huawei.hms.navi.navibase.enums.VehicleType;
-import com.huawei.hms.navi.navibase.model.ClientParas;
 import com.huawei.hms.navi.navibase.model.DevServerSiteConstant;
 import com.huawei.hms.navi.navibase.model.bus.BusNaviPathBean;
 import com.huawei.hms.navi.navibase.model.busnavirequest.BusCqlRequest;
@@ -112,7 +111,6 @@ public class BusResultActivity extends Activity implements View.OnClickListener,
         changes = findViewById(R.id.bus_changes);
         pedestrianSpeed = findViewById(R.id.bus_pedestrianSpeed);
         keyValue = findViewById(R.id.user_apikey_var2);
-        conversationId = findViewById(R.id.conversation_id_var2);
 
         dr1 = findViewById(R.id.bus_dr1);
         dr2 = findViewById(R.id.bus_dr2);
@@ -130,26 +128,26 @@ public class BusResultActivity extends Activity implements View.OnClickListener,
     }
 
     private void initBusSite() {
+        if (mapNavi == null) {
+            return;
+        }
+
         String busSite = CommonSetting.getServerSite();
         switch (busSite) {
             case DevServerSiteConstant.DR4:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR4);
+                mapNavi.setDevServerSite(DevServerSiteConstant.DR4);
                 dr4.setChecked(true);
                 break;
             case DevServerSiteConstant.DR3:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR3);
+                mapNavi.setDevServerSite(DevServerSiteConstant.DR3);
                 dr3.setChecked(true);
                 break;
             case DevServerSiteConstant.DR2:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR2);
+                mapNavi.setDevServerSite(DevServerSiteConstant.DR2);
                 dr2.setChecked(true);
                 break;
-            case DevServerSiteConstant.DR1:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
-                dr1.setChecked(true);
-                break;
             default:
-                MapNavi.setDevServerSite(DevServerSiteConstant.DR1);
+                mapNavi.setDevServerSite(DevServerSiteConstant.DR1);
                 dr1.setChecked(true);
                 break;
         }
@@ -158,7 +156,12 @@ public class BusResultActivity extends Activity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_bus_routing) {
-            setImportantParam();
+            if ("".equals(keyValue.getText().toString())) {
+                ToastUtil.showToast(this, "please input apiKey");
+                return;
+            } else {
+                setApiKey(keyValue.getText().toString().trim());
+            }
             // begin point
             String latLngStr = busStart.getText().toString();
             String[] latLngArrayStart = latLngStr.split(",");
@@ -212,32 +215,12 @@ public class BusResultActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    private void setImportantParam() {
-        if ("".equals(keyValue.getText().toString())) {
-            ToastUtil.showToast(this, "please input apiKey");
-            return;
-        } else {
-            setApiKey(keyValue.getText().toString().trim());
-        }
-
-        String clientId = conversationId.getText().toString();
-        if (clientId.length() != 32) {
-            Log.e(TAG, "conversationId must be 32 bit");
-            ToastUtil.showToast(this, "conversationId must be 32 bit.");
-            return;
-        } else {
-            ClientParas clientParas = new ClientParas();
-            clientParas.setConversationId(clientId);
-            MapNavi.initSettings(clientParas);
-        }
-    }
-
     private void setApiKey(String apiKey) {
-        if(apiKey == null) {
+        if(apiKey == null || mapNavi == null) {
             return;
         }
         try {
-            MapNavi.setApiKey(URLEncoder.encode(apiKey, "UTF-8"));
+            mapNavi.setApiKey(URLEncoder.encode(apiKey, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Failed to set api Key: " + e.getMessage());
         } catch (IllegalArgumentException e) {
@@ -247,7 +230,7 @@ public class BusResultActivity extends Activity implements View.OnClickListener,
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-        CommonUtil.changeServerSite(checkedId);
+        CommonUtil.changeServerSite(checkedId, mapNavi);
     }
 
     @Override
