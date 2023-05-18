@@ -252,7 +252,7 @@ public class NaviActivity extends AppCompatActivity implements RadioGroup.OnChec
                 if (locationResult != null && locationResult.getLastLocation() != null) {
                     Location location = locationResult.getLastLocation();
                     if (mapNavi != null) {
-                        boolean isSuccess = mapNavi.updateExtraLocationData(location);
+                        boolean isSuccess = mapNavi.updateExtraLocationData(location, -1);
                         Log.i(TAG, "updated location: " + isSuccess);
                     }
                 }
