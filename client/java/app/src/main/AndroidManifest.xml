@@ -18,7 +18,8 @@
         android:theme="@style/Theme.NaviSampleForAndroid">
         <activity
             android:name="com.huawei.hms.navi.demo.android.MainActivity"
-            android:theme="@style/Theme.NaviSampleForAndroid.NoActionBar">
+            android:theme="@style/Theme.NaviSampleForAndroid.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
