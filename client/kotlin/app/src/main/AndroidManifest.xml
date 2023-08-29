@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NaviSampleForAndroid">
+
         <activity
             android:name="com.huawei.hms.navi.sample.android.MainActivity"
             android:theme="@style/Theme.NaviSampleForAndroid.NoActionBar"
@@ -35,5 +36,4 @@
             android:name="com.huawei.hms.navi.sample.android.BusResultActivity"
             android:screenOrientation="portrait" />
     </application>
-
 </manifest>
